@@ -56,8 +56,8 @@ class IviServerRequests:
         :param str name: имя CRUD объекта
         :param JSON data: данные для обновления на  сервере
         :return: результат отправки запроса на сервер
-        :rtype: IviServerResponse
-        """
+        :rtype: IviServerResponse"""
+
         #url = self._url + '/' + self.obj_type + '/' + name
         url = '{}{}{}'.format(self._url, urllib.parse.quote('/'), self.obj_type)
         response = requests.put(url, auth=self._auth, data=data, headers=self._headers)
