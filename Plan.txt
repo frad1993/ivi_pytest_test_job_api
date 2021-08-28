@@ -1,0 +1,88 @@
+Перед каждым тестовым классом очищается база данных персонажей:
+curl -u faridazim@yandex.ru:APZrVp83vFNk5F http://rest.test.ivi.ru/v2/reset
+
+
+
+GET characters
+1. Запрос на всех персонажей
+curl -u faridazim@yandex.ru:APZrVp83vFNk5F http://rest.test.ivi.ru/v2/characters
+Ожидаемый результат:
+Статус код = 200
+
+
+
+2. Получаем одного персонажа по имени
+curl -u faridazim@yandex.ru:APZrVp83vFNk5F http://rest.test.ivi.ru/v2/character?name=Avalanche
+Ожидаемый результат:
+Статус код = 200
+
+
+
+3. Получаем несуществующего персонажа
+curl -u faridazim@yandex.ru:APZrVp83vFNk5F http://rest.test.ivi.ru/character?name=KratosFromSparta
+Ожидаемый результат:
+Статус код = 400
+Сообщение = "error": "No such name"
+
+
+
+4. Получаем информацию без отправки имени
+curl -u faridazim@yandex.ru:APZrVp83vFNk5F http://rest.test.ivi.ru/character/
+Ожидаемый результат:
+Статус код = 400
+Сообщение: "error": "No such name"
+
+
+POST character
+1. Добавить несуществующего персонажа - все поля корректные
+Ожидамый результат:
+Статус код = 200
+Поля в response совпадают с request
+
+2. Добавить существующего персонажа
+Статус код = 400
+Сообщение: "hfweioweo is already exists"
+
+3. Добавить персонажей с измененными типами полей (буквы вместо цифр и наоборот)
+Статус код = 400
+Сообщение: Payload must be a valid json
+
+4. Добавить персонажей с некорректными полями (пустые строки)
+Статус код = 400
+Сообщение: Length must be between 1 and 350.
+
+5. Добавить персонажей с некорректными полями (слишком длинные строки и числа больше максимальных)
+Статус код = 400
+Сообщение: 'Length must be between 1 and 350.'
+
+
+6. Добавить персонажей с несуществующими полями
+Статус код = 400 
+Сообщение: 'Length must be between 1 and 350.'
+
+UPDATE character
+1. Обновить несуществующего персонажа - все поля корректные
+Статус код = 400 
+Сообщение: "error": "No such name"
+
+2. Обновить существующего персонажа
+Статус код = 200
+Поля в response совпадают с request
+
+3. Обновить персонажа некорректными полями (буквы вместо цифр и наоборот)
+Статус код = 400
+Сообщение: "error": "name: ['Missing data for required field.']"
+
+4. Обновить персонажа с пустым значением в поляме (пустые строки)
+Статус код = 400
+Сообщение:  "error": "name: ['Length must be between 1 and 350.']"
+
+
+
+DELETE character
+1. Удалить существующего персонажа
+Статус код = 200
+
+2. Удалить не существующего персонажа
+Статус код = 400
+Сообщение: {"error":"No such name"}
